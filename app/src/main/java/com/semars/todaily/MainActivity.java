@@ -1,11 +1,14 @@
 package com.semars.todaily;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+    private FloatingActionButton fabAddItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
+        fabAddItem = (FloatingActionButton) findViewById(R.id.fabAddItem);
+        fabAddItem.setOnClickListener(this);
 
         lvItems = (ListView) findViewById(R.id.lvItems);
         items = new ArrayList<String>();
@@ -45,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onAddItem() {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
-        etNewItem.setText("");
+        launchAddView();
+        //String itemText = etNewItem.getText().toString();
+        //itemsAdapter.add(itemText);
+        //etNewItem.setText("");
         writeItems();
     }
 
@@ -109,10 +116,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void launchAddView() {
+        Intent intent = new Intent(MainActivity.this, AddActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.fabAddItem: {
+                launchAddView();
+                break;
+            }
         }
     }
 
