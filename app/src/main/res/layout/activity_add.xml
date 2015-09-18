@@ -30,7 +30,7 @@
         android:focusableInTouchMode="true">
 
         <TextView
-            android:id="@+id/tvTaskName"
+            android:id="@+id/tvHeaderTaskName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/activity_add_etTaskNameHint"
-            android:layout_below="@+id/tvTaskName"
+            android:layout_below="@+id/tvHeaderTaskName"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
@@ -53,7 +53,7 @@
             android:inputType="text"/>
 
         <TextView
-            android:id="@+id/tvTaskDue"
+            android:id="@+id/tvHeaderTaskDue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -67,7 +67,7 @@
             android:id="@+id/etTaskDueDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTaskDue"
+            android:layout_below="@+id/tvHeaderTaskDue"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/btnTaskDueDate"

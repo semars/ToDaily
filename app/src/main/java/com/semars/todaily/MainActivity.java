@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.internal.app.ToolbarActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,17 +21,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+    private RecyclerView rvTasks;
+    private LinearLayoutManager linearLayoutManager;
+    private TasksAdapter tasksAdapter;
+    private List<Task> tasks;
     private FloatingActionButton fabAddItem;
+
+    static final int ADD_TASK_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +53,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabAddItem = (FloatingActionButton) findViewById(R.id.fabAddItem);
         fabAddItem.setOnClickListener(this);
 
-        lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<String>();
-        readItems();
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
+        rvTasks = (RecyclerView) findViewById(R.id.rvTasks);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.scrollToPosition(0);
+        rvTasks.setLayoutManager(linearLayoutManager);
+        tasks = new ArrayList<Task>();
+        tasksAdapter = new TasksAdapter(tasks);
+        rvTasks.setAdapter(tasksAdapter);
+        rvTasks.setHasFixedSize(true);
 
-        setupListViewListener();
+        // OLD: Listview
+        //lvItems = (ListView) findViewById(R.id.lvItems);
+        //items = new ArrayList<String>();
+        //readItems();
+        //itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        //lvItems.setAdapter(itemsAdapter);
+
+        //setupListViewListener();
+        // END
     }
 
-    public void onAddItem() {
-        launchAddView();
-        //String itemText = etNewItem.getText().toString();
-        //itemsAdapter.add(itemText);
-        //etNewItem.setText("");
+    public void onAddItem(Task task) {
+        tasks.add(task);
+        tasksAdapter.notifyDataSetChanged();
         writeItems();
     }
 
@@ -107,10 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_settings: {
                 return true;
             }
-            case R.id.action_add: {
-                onAddItem();
-                return true;
-            }
             default: return super.onOptionsItemSelected(item);
         }
 
@@ -118,7 +135,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void launchAddView() {
         Intent intent = new Intent(MainActivity.this, AddActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ADD_TASK_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == ADD_TASK_REQUEST) {
+            Task task = new Gson().fromJson(data.getExtras().getString("task"), Task.class);
+            onAddItem(task);
+        }
     }
 
     @Override
