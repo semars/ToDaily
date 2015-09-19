@@ -19,7 +19,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView tvTaskName;
         public TextView tvTaskDue;
@@ -32,6 +32,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             tvTaskName = (TextView) itemView.findViewById(R.id.tvTaskName);
             tvTaskDue = (TextView) itemView.findViewById(R.id.tvTaskDate);
             cbTaskCompleted = (CheckBox) itemView.findViewById(R.id.cbTaskComplete);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            cbTaskCompleted.toggle();
         }
     }
 
