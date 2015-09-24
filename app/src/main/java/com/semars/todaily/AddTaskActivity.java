@@ -9,15 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
-import java.util.Date;
 
-public class AddActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class AddTaskActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private FloatingActionButton fabDone;
     private EditText etTaskName;
@@ -31,7 +29,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_add_task);
 
         fabDone = (FloatingActionButton) findViewById(R.id.fabDone);
         fabDone.setOnClickListener(this);
@@ -57,12 +55,6 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add) {
-            //TaskDatePickerFragment taskDatePickerDialogFragment = TaskDatePickerFragment.newInstance();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -74,7 +66,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     public void createDatePickerDialog(Calendar currentCalendar) {
         DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                AddActivity.this,
+                AddTaskActivity.this,
                 currentCalendar.get(Calendar.YEAR),
                 currentCalendar.get(Calendar.MONTH),
                 currentCalendar.get(Calendar.DAY_OF_MONTH)
@@ -86,7 +78,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     public void onSubmit(View v) {
         taskName = etTaskName.getText().toString();
-        Task task = new Task(taskName, taskDate, false);
+        Task task = new Task();
+        task.setTaskName(taskName);
+        task.setTaskDate(taskDate);
+        task.setCompleted(false);
         String taskJson = new Gson().toJson(task);
         Intent data = new Intent();
         data.putExtra("task", taskJson);

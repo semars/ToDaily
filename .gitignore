@@ -57,7 +57,7 @@ nb-configuration.xml
 
 ## Gradle
 
-.gradle
+*.gradle
 gradle-app.setting
 build/
 
@@ -66,3 +66,4 @@ build/
 
 # Log Files
 *.log
+*.txt

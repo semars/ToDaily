@@ -10,10 +10,8 @@ public class Task {
     private boolean completed;
     private static int lastTaskId = 0;
 
-    public Task(String taskName, String taskDate, boolean completed) {
-        this.taskName = taskName;
-        this.taskDate = taskDate;
-        this.completed = completed;
+    public Task() {
+        // no-args constructor
     }
 
     public String getTaskName() {
@@ -28,4 +26,15 @@ public class Task {
         return completed;
     }
 
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setTaskDate(String taskDate) {
+        this.taskDate = taskDate;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }
